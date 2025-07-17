@@ -1,0 +1,7 @@
+graph_dir:  ../train_graphs/
+saved_model_file: ../model_save/model_checkpoint.pth
+dataset_size:     1
+section_num:      1
+node_attr_size:   3
+edge_attr_size:   4
+threshold:        0.5
