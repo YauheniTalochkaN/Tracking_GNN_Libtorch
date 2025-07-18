@@ -7,12 +7,12 @@
 class KATLayerImpl : public torch::nn::Module 
 {
 public:
-    KATLayerImpl(const int& input_dim_, const int& output_dim_, const std::pair<double, double>& xrange, 
-                 const int& n_ = 10, const int& order_ = 1, const double& std_w = 0.001, const double& dropout_prob = 0.0);
+    KATLayerImpl(const int input_dim_, const int output_dim_, const std::pair<double, double>& xrange, 
+                 const int n_ = 10, const int order_ = 1, const double std_w = 0.001, const double dropout_prob = 0.0);
     virtual ~KATLayerImpl() override = default;
     virtual torch::Tensor basis(torch::Tensor z, torch::Tensor alpha, int s);
     virtual torch::Tensor forward(torch::Tensor x);
-    virtual double eval_func(const double& x, const int& i, const int& j);
+    virtual double eval_func(const double x, const int i, const int j);
 
 protected:
     int input_dim, output_dim, n, order;

@@ -8,8 +8,8 @@
 class EdgeClassificationGNNImpl final : public torch::nn::Module 
 {
 public:
-    EdgeClassificationGNNImpl(const int& node_attr_size, const int& edge_attr_size, const size_t& n_iters_ = 6, 
-                              const int& node_hidden_size = 32, const int& edge_hidden_size = 32, 
+    EdgeClassificationGNNImpl(const int node_attr_size, const int edge_attr_size, const size_t n_iters_ = 6, 
+                              const int node_hidden_size = 32, const int edge_hidden_size = 32, 
                               const std::vector<int>& node_encoder_hidden_sizes = std::vector<int>{64, 64},
                               const std::vector<int>& edge_encoder_hidden_sizes = std::vector<int>{64, 64},
                               const std::vector<int>& initial_edge_classifier_hidden_sizes = std::vector<int>{64, 64},

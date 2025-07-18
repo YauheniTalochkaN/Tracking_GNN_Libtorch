@@ -1,8 +1,8 @@
 #include "KATMLP.hh"
 
-KATMLPImpl::KATMLPImpl(const int& input_size, const std::vector<int>& hidden_sizes, const int& output_size,
-                       const std::vector<std::pair<double, double>>& xranges, const int& n, const int& order, 
-                       const double& std_w, const double& dropout_prob) 
+KATMLPImpl::KATMLPImpl(const int input_size, const std::vector<int>& hidden_sizes, const int output_size,
+                       const std::vector<std::pair<double, double>>& xranges, const int n, const int order, 
+                       const double std_w, const double dropout_prob) 
 {
     if (input_size < 1)
     {

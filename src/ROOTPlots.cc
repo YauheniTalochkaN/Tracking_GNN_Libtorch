@@ -3,7 +3,7 @@
 void ROOTPlots::PlotTrainingLoss(const float* epoch_array, 
                                  const float* train_error, 
                                  const float* test_error, 
-                                 const int& num_epochs,
+                                 const int num_epochs,
                                  const std::string& output_filename)
 {
     TFile* fout = 0;
@@ -70,7 +70,7 @@ void ROOTPlots::PlotMetrics(const float* threshold_array,
                             const float* accuracy_array, 
                             const float* purity_array, 
                             const float* efficiency_array, 
-                            const int& num_points,
+                            const int num_points,
                             const std::string& output_filename)
 {
     TFile* fout = 0;

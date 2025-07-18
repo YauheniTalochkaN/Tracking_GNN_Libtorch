@@ -1,7 +1,7 @@
 #include "KATLayer.hh"
 
-KATLayerImpl::KATLayerImpl(const int& input_dim_, const int& output_dim_, const std::pair<double, double>& xrange, 
-                           const int& n_, const int& order_, const double& std_w, const double& dropout_prob) :
+KATLayerImpl::KATLayerImpl(const int input_dim_, const int output_dim_, const std::pair<double, double>& xrange, 
+                           const int n_, const int order_, const double std_w, const double dropout_prob) :
                            input_dim(input_dim_), output_dim(output_dim_), n(n_), order(order_) 
 {   
     if (input_dim < 1)
@@ -57,7 +57,7 @@ torch::Tensor KATLayerImpl::forward(torch::Tensor x)
     return torch::sum(w * f, torch::IntArrayRef{1, 3});
 }
     
-double KATLayerImpl::eval_func(const double& x, const int& i, const int& j) 
+double KATLayerImpl::eval_func(const double x, const int i, const int j) 
 {
     if (i < 0 || i >= input_dim) 
     {

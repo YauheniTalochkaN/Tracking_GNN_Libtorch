@@ -10,11 +10,11 @@ template <typename ActivationType = torch::nn::Tanh,
 class MLPImpl final : public torch::nn::Module 
 {
 public:
-    MLPImpl(const int& input_size,
+    MLPImpl(const int input_size,
             const std::vector<int>& hidden_sizes,
-            const int& output_size,
-            const double& dropout_prob = 0.0,
-            const bool& use_layer_norm = true)
+            const int output_size,
+            const double dropout_prob = 0.0,
+            const bool use_layer_norm = true)
     {
         if (input_size < 1)
         {

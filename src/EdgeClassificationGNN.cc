@@ -1,7 +1,7 @@
 #include "EdgeClassificationGNN.hh"
 
-EdgeClassificationGNNImpl::EdgeClassificationGNNImpl(const int& node_attr_size, const int& edge_attr_size, const size_t& n_iters_, 
-                                                     const int& node_hidden_size, const int& edge_hidden_size, 
+EdgeClassificationGNNImpl::EdgeClassificationGNNImpl(const int node_attr_size, const int edge_attr_size, const size_t n_iters_, 
+                                                     const int node_hidden_size, const int edge_hidden_size, 
                                                      const std::vector<int>& node_encoder_hidden_sizes,
                                                      const std::vector<int>& edge_encoder_hidden_sizes,
                                                      const std::vector<int>& initial_edge_classifier_hidden_sizes,

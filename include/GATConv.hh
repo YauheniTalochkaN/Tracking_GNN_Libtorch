@@ -7,13 +7,13 @@ template <typename ActivationType = torch::nn::Tanh,
 class GATConvImpl : public torch::nn::Module 
 {
 public:
-    GATConvImpl(const int& input_node_attr_size,
+    GATConvImpl(const int input_node_attr_size,
                 const std::vector<int>& hidden_sizes,
-                const int& output_node_attr_size,
-                const int& initial_node_attr_size,
-                const int& edge_attr_size,
-                const double& dropout_prob = 0.0,
-                const bool& use_layer_norm = true)
+                const int output_node_attr_size,
+                const int initial_node_attr_size,
+                const int edge_attr_size,
+                const double dropout_prob = 0.0,
+                const bool use_layer_norm = true)
     {
         if (input_node_attr_size < 1)
         {
