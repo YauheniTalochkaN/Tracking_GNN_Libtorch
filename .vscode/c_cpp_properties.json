@@ -6,7 +6,7 @@
                 "${workspaceFolder}/**",
                 "/opt/libtorch/include/",
                 "/opt/libtorch/include/torch/csrc/api/include",
-                "/opt/nvidia/hpc_sdk/Linux_x86_64/25.3/cuda/12.8/include",
+                "/usr/local/cuda-12.8/include",
                 "/opt/root/root-install/include"
             ],
             "defines": [],

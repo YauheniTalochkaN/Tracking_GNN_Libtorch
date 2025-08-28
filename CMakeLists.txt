@@ -3,20 +3,23 @@ cmake_minimum_required(VERSION 3.11)
 #----------------------------------------------------------------------------------------------------------------------
 
 set(CUDASYS $ENV{CUDASYS})
-set(CMAKE_CUDA_TOOLKIT_ROOT_DIR "${CUDASYS}")
-set(NVCOMPILERS $ENV{NVCOMPILERS})
-set(NVARCH $ENV{NVARCH})
-set(CMAKE_CUDA_COMPILER "${NVCOMPILERS}/${NVARCH}/25.3/compilers/bin/nvcc")
-if(NOT DEFINED CMAKE_CUDA_COMPILER)
-    message(FATAL_ERROR "CUDA is not found!")
-endif()
-link_directories("${CMAKE_CUDA_TOOLKIT_ROOT_DIR}/lib64")
-find_package(CUDAToolkit 12.8 REQUIRED COMPONENTS cudart cublas cusparse cufft curand cusolver cusparseLt cudss)
+
+set(CUDAToolkit_DIR "${CUDASYS}")
+set(CUDAToolkit_INCLUDE_DIRS "${CUDASYS}/include")
+set(CUDAToolkit_LIBRARY_DIR "${CUDASYS}/lib64")
+set(CUDAToolkit_BIN_DIR "${CUDASYS}/bin")
+set(CUDAToolkit_ROOT_DIR "${CUDASYS}")
+set(CMAKE_CUDA_COMPILER "${CUDASYS}/bin/nvcc")
+
+link_directories("${CUDASYS}/lib64")
+
+find_package(CUDAToolkit 12.8 REQUIRED COMPONENTS cudart cublas cusparse cufft curand cusolver cusparseLt cudss cufile)
 
 #----------------------------------------------------------------------------------------------------------------------
 
 set(CAFFE2_USE_CUDNN ON)
 set(CAFFE2_USE_CUSPARSELT ON)
+set(CAFFE2_USE_CUFILE ON)
 set(USE_CUDSS ON)     
 
 #----------------------------------------------------------------------------------------------------------------------
@@ -36,6 +39,7 @@ include("${nvtx3_dir}/nvtxImportedTargets.cmake")
 
 #----------------------------------------------------------------------------------------------------------------------
 
+set(CUDA_TOOLKIT_ROOT_DIR "${CUDASYS}")
 set(TORCHSYS $ENV{TORCHSYS})
 set(Torch_DIR "${TORCHSYS}/share/cmake/Torch")
 find_package(Torch REQUIRED)
@@ -93,6 +97,7 @@ target_link_libraries(TorchNetworks PUBLIC ${TORCH_LIBRARIES}
                                            cudnn
                                            cusparseLt
                                            cudss
+                                           cufile
                                            nvtx3-cpp
                                            ${ROOT_LIBRARIES} 
                                            ${ROOT_EXE_LINKER_FLAGS} 
