@@ -74,16 +74,18 @@ struct GraphSample
         std::vector<torch::Tensor> edge_indices, node_attrs, node_hit_ids, edge_attrs, answers;
 
         int64_t node_offset = 0;
+        int64_t hit_offset = 0;
         
         for (const auto& s : samples)
         {
             edge_indices.push_back(s.edge_index + node_offset);
             node_attrs.push_back(s.node_attr);
-            node_hit_ids.push_back(s.node_hit_id);
+            node_hit_ids.push_back(s.node_hit_id + hit_offset);
             edge_attrs.push_back(s.edge_attr);
             answers.push_back(s.answer);
 
             node_offset += s.node_attr.size(0);
+            hit_offset += s.node_hit_id.max().item<int64_t>();
         }
 
         return GraphSample{torch::cat(edge_indices, 1),
