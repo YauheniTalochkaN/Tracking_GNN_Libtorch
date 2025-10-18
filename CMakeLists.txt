@@ -4,11 +4,7 @@ cmake_minimum_required(VERSION 3.11)
 
 set(CUDASYS $ENV{CUDASYS})
 
-set(CUDAToolkit_DIR "${CUDASYS}")
-set(CUDAToolkit_INCLUDE_DIRS "${CUDASYS}/include")
-set(CUDAToolkit_LIBRARY_DIR "${CUDASYS}/lib64")
-set(CUDAToolkit_BIN_DIR "${CUDASYS}/bin")
-set(CUDAToolkit_ROOT_DIR "${CUDASYS}")
+set(CMAKE_CUDA_TOOLKIT_ROOT_DIR ${CUDASYS})
 set(CMAKE_CUDA_COMPILER "${CUDASYS}/bin/nvcc")
 
 link_directories("${CUDASYS}/lib64")
@@ -30,7 +26,7 @@ set(CMAKE_CUDA_HOST_COMPILER "g++-14")
 
 #----------------------------------------------------------------------------------------------------------------------
 
-project(cutensors LANGUAGES CXX CUDA)
+project(TrackingGNN LANGUAGES CXX CUDA)
 
 #----------------------------------------------------------------------------------------------------------------------
 
