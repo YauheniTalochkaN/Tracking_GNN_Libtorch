@@ -51,12 +51,12 @@ void SelectHitsFromCSV(const std::string& hit_file_name,
 
         if (tokens.size() >= 6) 
         {
-            int hit_id = std::stoll(tokens[0]);
-            float x = std::stod(tokens[1]);
-            float y = std::stod(tokens[2]);
-            float z = std::stod(tokens[3]);
-            int sector_id = std::stoll(tokens[4]);
-            int row_id = std::stoll(tokens[5]);
+            int hit_id = std::stoi(tokens[0]);
+            float x = std::stof(tokens[1]);
+            float y = std::stof(tokens[2]);
+            float z = std::stof(tokens[3]);
+            int sector_id = std::stoi(tokens[4]);
+            int row_id = std::stoi(tokens[5]);
             float r = std::sqrt(x * x + y * y);
             float phi = std::atan2(y, x);
             
