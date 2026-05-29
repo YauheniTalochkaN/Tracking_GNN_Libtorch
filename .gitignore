@@ -1,0 +1,6 @@
+/build
+/train_graphs
+/MPD_dataset/MPD_events
+/MPD_dataset/TpcData_1000.root
+/answers
+/true_answers
