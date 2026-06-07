@@ -9,7 +9,8 @@ set(CMAKE_CUDA_COMPILER "${CUDASYS}/bin/nvcc")
 
 link_directories("${CUDASYS}/lib64")
 
-find_package(CUDAToolkit 12.8 REQUIRED COMPONENTS cudart cublas cusparse cufft curand cusolver cusparseLt cudss cufile)
+find_package(CUDAToolkit 13.2 REQUIRED COMPONENTS 
+             cudart cublas cusparse cufft curand cusolver cusparseLt cudss cufile cupti nccl nvshmem_host)
 
 #----------------------------------------------------------------------------------------------------------------------
 
@@ -20,9 +21,9 @@ set(USE_CUDSS ON)
 
 #----------------------------------------------------------------------------------------------------------------------
 
-set(CMAKE_C_COMPILER "gcc-14")
-set(CMAKE_CXX_COMPILER "g++-14")
-set(CMAKE_CUDA_HOST_COMPILER "g++-14")
+set(CMAKE_C_COMPILER "gcc")
+set(CMAKE_CXX_COMPILER "g++")
+set(CMAKE_CUDA_HOST_COMPILER "g++")
 
 #----------------------------------------------------------------------------------------------------------------------
 
@@ -89,6 +90,9 @@ target_link_libraries(TorchNetworks PUBLIC ${TORCH_LIBRARIES}
                                            CUDA::cufft 
                                            CUDA::curand
                                            CUDA::cusolver
+                                           CUDA::cupti
+                                           nccl
+                                           nvshmem_host
                                            cudnn
                                            cusparseLt
                                            cudss
