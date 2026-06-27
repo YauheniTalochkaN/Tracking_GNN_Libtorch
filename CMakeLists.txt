@@ -21,9 +21,9 @@ set(USE_CUDSS ON)
 
 #----------------------------------------------------------------------------------------------------------------------
 
-set(CMAKE_C_COMPILER "gcc")
-set(CMAKE_CXX_COMPILER "g++")
-set(CMAKE_CUDA_HOST_COMPILER "g++")
+set(CMAKE_C_COMPILER "gcc-15")
+set(CMAKE_CXX_COMPILER "g++-15")
+set(CMAKE_CUDA_HOST_COMPILER "g++-15")
 
 #----------------------------------------------------------------------------------------------------------------------
 
