@@ -56,7 +56,7 @@ find_package(yaml-cpp REQUIRED)
 
 #----------------------------------------------------------------------------------------------------------------------
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS} -Wall -O2 -fPIC -ffast-math -mavx")
 
@@ -82,7 +82,7 @@ separate_arguments(ROOT_EXE_LINKER_FLAGS)
 
 add_library(TorchNetworks SHARED ${sources})
 target_include_directories(TorchNetworks PUBLIC ${PROJECT_SOURCE_DIR}/include)
-target_compile_features(TorchNetworks PUBLIC cxx_std_17 cuda_std_17)
+target_compile_features(TorchNetworks PUBLIC cxx_std_20 cuda_std_20)
 target_link_libraries(TorchNetworks PUBLIC ${TORCH_LIBRARIES}  
                                            CUDA::cudart 
                                            CUDA::cublas 
