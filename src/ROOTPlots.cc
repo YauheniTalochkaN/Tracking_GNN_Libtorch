@@ -161,11 +161,11 @@ void ROOTPlots::PlotGraphSample3D(const GraphSample& sample,
     TGraph2D* nodes_graph = new TGraph2D(num_nodes);
     nodes_graph->SetName("Graph");
     nodes_graph->SetTitle("; X; Y; Z");
-    nodes_graph->GetXaxis()->SetTitleSize(0.04);
+    nodes_graph->GetXaxis()->SetTitleSize(0.06);
     nodes_graph->GetXaxis()->SetTitleOffset(1.1);
-    nodes_graph->GetYaxis()->SetTitleSize(0.04);
+    nodes_graph->GetYaxis()->SetTitleSize(0.06);
     nodes_graph->GetYaxis()->SetTitleOffset(1.5);
-    nodes_graph->GetZaxis()->SetTitleSize(0.04);
+    nodes_graph->GetZaxis()->SetTitleSize(0.06);
     nodes_graph->GetZaxis()->SetTitleOffset(1.2);
     
     for (int i = 0; i < num_nodes; ++i) 
@@ -181,7 +181,7 @@ void ROOTPlots::PlotGraphSample3D(const GraphSample& sample,
     }
 
     nodes_graph->SetMarkerStyle(kFullCircle);
-    nodes_graph->SetMarkerSize(0.6);
+    nodes_graph->SetMarkerSize(0.3);
     nodes_graph->SetMarkerColor(kBlack);
     
     std::vector<TPolyLine3D*> edge_lines;
