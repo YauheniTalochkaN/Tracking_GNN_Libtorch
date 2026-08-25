@@ -12,7 +12,4 @@ pos_weight:       1.0
 neg_weight:       2.0
 step_size:        20
 gamma:            0.9
-emb_alpha:        0.01
-emb_margin:       2.0
-degree_alpha:     0.1
 threshold:        0.5

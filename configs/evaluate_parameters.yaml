@@ -4,4 +4,4 @@ dataset_size:     1
 section_num:      1
 node_attr_size:   3
 edge_attr_size:   4
-threshold:        0.571
+threshold:        0.4118

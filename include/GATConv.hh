@@ -12,6 +12,7 @@ public:
                 const int output_node_attr_size,
                 const int initial_node_attr_size,
                 const int edge_attr_size,
+                const int n_heads = 2,
                 const double dropout_prob = 0.0,
                 const bool use_layer_norm = true)
     {
@@ -34,13 +35,18 @@ public:
         {
             throw std::invalid_argument("GATConvImpl::GATConvImpl: edge_attr_size cannot be less than one.");
         }
+
+        if (n_heads < 1)
+        {
+            throw std::invalid_argument("GATConvImpl::GATConvImpl: n_heads cannot be less than one.");
+        }
         
-        if(hidden_sizes.empty()) 
+        if (hidden_sizes.empty()) 
         {
             throw std::invalid_argument("GATConvImpl::GATConvImpl: hidden_sizes cannot be empty.");
         }
 
-        for(auto& it : hidden_sizes)
+        for (auto& it : hidden_sizes)
         {
             if (it < 1)
             {
@@ -48,7 +54,7 @@ public:
             }
         }
 
-        mlp = register_module("mlp", MLP<ActivationType, EndActivationType>(3 * input_node_attr_size + initial_node_attr_size + 2 * edge_attr_size, 
+        mlp = register_module("mlp", MLP<ActivationType, EndActivationType>(initial_node_attr_size + input_node_attr_size + 2 * n_heads * (input_node_attr_size + edge_attr_size), 
                                                                             hidden_sizes, 
                                                                             output_node_attr_size, 
                                                                             dropout_prob, 
@@ -58,40 +64,42 @@ public:
     virtual ~GATConvImpl() override = default;
 
     virtual torch::Tensor forward(torch::Tensor edge_index, torch::Tensor node_attr,
-                                  torch::Tensor edge_attr, torch::Tensor edge_weight, torch::Tensor initial_node_attr)
+                                  torch::Tensor edge_attr, torch::Tensor edge_weights, torch::Tensor initial_node_attr)
     {
-        auto reversed_edge_index = edge_index.flip(0);
+        torch::Tensor reversed_edge_index = edge_index.flip(0);
 
-        auto one_hop_incoming = propagate(edge_index, node_attr, edge_attr, edge_weight);
-        auto one_hop_outgoing = propagate(reversed_edge_index, node_attr, edge_attr, edge_weight);
+        torch::Tensor one_hop_incoming = propagate(edge_index, node_attr, edge_attr, edge_weights);
+        torch::Tensor one_hop_outgoing = propagate(reversed_edge_index, node_attr, edge_attr, edge_weights);
 
-        auto combined = torch::cat({initial_node_attr, node_attr, 
-                                    one_hop_incoming, one_hop_outgoing}, -1);
+        torch::Tensor combined = torch::cat({initial_node_attr, node_attr, 
+                                             one_hop_incoming, one_hop_outgoing}, -1);
 
         return mlp->forward(combined);
     }
 
 protected:
     virtual torch::Tensor propagate(torch::Tensor edge_index, torch::Tensor node_attr, 
-                                    torch::Tensor edge_attr, torch::Tensor edge_weight)
+                                    torch::Tensor edge_attr, torch::Tensor edge_weights)
     {
-        auto messages = message(edge_index, node_attr, edge_attr, edge_weight);
+        torch::Tensor messages = message(edge_index, node_attr, edge_attr, edge_weights);
 
         return aggregate(edge_index, messages, node_attr.size(0));
     }
 
     virtual torch::Tensor message(torch::Tensor edge_index, torch::Tensor node_attr,
-                                  torch::Tensor edge_attr, torch::Tensor edge_weight)
+                                  torch::Tensor edge_attr, torch::Tensor edge_weights)
     {
-        auto source_nodes = edge_index[0];
-        auto node_attr_j = node_attr.index_select(0, source_nodes);
+        torch::Tensor source_nodes = edge_index[0];
+        torch::Tensor node_attr_j = node_attr.index_select(0, source_nodes);
+        
+        torch::Tensor combined = torch::cat({node_attr_j, edge_attr}, -1);
 
-        return edge_weight * torch::cat({node_attr_j, edge_attr}, -1);
+        return (edge_weights.unsqueeze(-1) * combined.unsqueeze(1)).reshape({edge_weights.size(0), -1});
     }
 
     virtual torch::Tensor aggregate(torch::Tensor edge_index, torch::Tensor messages, int num_nodes)
     {
-        auto target_nodes = edge_index[1];
+        torch::Tensor target_nodes = edge_index[1];
         
         return torch::zeros({num_nodes, messages.size(1)}, messages.options()).index_add_(0, target_nodes, messages);
     }

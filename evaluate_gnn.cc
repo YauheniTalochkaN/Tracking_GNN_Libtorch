@@ -136,7 +136,7 @@ int main(int argc, char* argv[])
         auto edge_attr    = batch.edge_attr;
         auto answer_true  = batch.answer;
 
-        auto [answer_pred, final_node_attr] = model->forward(edge_index, node_attr, edge_attr);
+        auto answer_pred = model->forward(edge_index, node_attr, edge_attr);
 
         auto true_labels = answer_true.to(torch::kInt32);
 

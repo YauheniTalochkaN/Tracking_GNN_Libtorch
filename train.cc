@@ -56,52 +56,6 @@ torch::Tensor balanced_binary_cross_entropy(torch::Tensor pred, torch::Tensor ta
     return loss;
 }
 
-torch::Tensor total_loss(torch::Tensor pred, torch::Tensor target,
-                         torch::Tensor final_node_attr, torch::Tensor edge_index,
-                         float emb_margin, float emb_alpha, float degree_alpha,
-                         float pos_weight, float neg_weight)
-{
-    auto bce = balanced_binary_cross_entropy(pred, target, pos_weight, neg_weight);
-
-    auto in_indices = edge_index[0];
-    auto out_indices = edge_index[1];
-
-    auto x_i = final_node_attr.index_select(0, in_indices);
-    auto x_j = final_node_attr.index_select(0, out_indices);
-
-    auto dxij = torch::norm(x_i - x_j, 2, 1);
-
-    auto pos_mask = target.eq(1).squeeze();
-    auto neg_mask = target.eq(0).squeeze();
-
-    auto emb_pos = torch::tensor(0.0, pred.options());
-    auto emb_neg = torch::tensor(0.0, pred.options());
-
-    if (pos_mask.any().item<bool>()) 
-    {
-        emb_pos = dxij.masked_select(pos_mask).pow(2).mean();
-    }
-
-    if (neg_mask.any().item<bool>()) 
-    {
-        emb_neg = torch::clamp(emb_margin - dxij.masked_select(neg_mask), 0.0).pow(2).mean();
-    }
-
-    auto emb = emb_alpha * (emb_pos + (neg_weight / pos_weight) * emb_neg);
-
-    int64_t num_nodes = final_node_attr.size(0);
-
-    auto soft_degrees = torch::zeros({num_nodes}, pred.options());
-    auto true_degrees = torch::zeros({num_nodes}, target.options());
-
-    soft_degrees.scatter_add_(0, out_indices, pred.squeeze(-1));
-    true_degrees.scatter_add_(0, out_indices, target.squeeze(-1));
-
-    auto degree = degree_alpha * torch::mse_loss(soft_degrees, true_degrees);
-
-    return bce + emb + degree;
-}
-
 int main(int argc, char* argv[]) 
 {
     auto start = std::chrono::steady_clock::now();
@@ -129,9 +83,6 @@ int main(int argc, char* argv[])
     const float neg_weight     = config["neg_weight"].as<float>();
     const int   step_size      = config["step_size"].as<int>();
     const float gamma          = config["gamma"].as<float>();
-    const float emb_alpha      = config["emb_alpha"].as<float>();
-    const float emb_margin     = config["emb_margin"].as<float>();
-    const float degree_alpha   = config["degree_alpha"].as<float>();
     const float threshold      = config["threshold"].as<float>();
 
     std::filesystem::path dirPath = std::filesystem::path(saved_model_file).parent_path();
@@ -254,12 +205,9 @@ int main(int argc, char* argv[])
             auto edge_attr    = batch.edge_attr;
             auto answer_true  = batch.answer;
 
-            auto [answer_pred, final_node_attr] = model->forward(edge_index, node_attr, edge_attr); 
+            auto answer_pred = model->forward(edge_index, node_attr, edge_attr); 
 
-            auto loss = total_loss(answer_pred, answer_true, 
-                                   final_node_attr, edge_index,
-                                   emb_margin, emb_alpha, degree_alpha,
-                                   pos_weight, neg_weight);
+            auto loss = balanced_binary_cross_entropy(answer_pred, answer_true, pos_weight, neg_weight);
 
             loss.backward();
             optimizer.step();
@@ -292,12 +240,9 @@ int main(int argc, char* argv[])
             auto edge_attr    = batch.edge_attr;
             auto answer_true  = batch.answer;
 
-            auto [answer_pred, final_node_attr] = model->forward(edge_index, node_attr, edge_attr);
+            auto answer_pred = model->forward(edge_index, node_attr, edge_attr);
 
-            auto loss = total_loss(answer_pred, answer_true, 
-                                   final_node_attr, edge_index,
-                                   emb_margin, emb_alpha, degree_alpha,
-                                   pos_weight, neg_weight);
+            auto loss = balanced_binary_cross_entropy(answer_pred, answer_true, pos_weight, neg_weight);
 
             test_epoch_loss += loss.item<float>();
 

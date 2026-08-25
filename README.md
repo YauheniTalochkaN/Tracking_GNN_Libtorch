@@ -26,5 +26,5 @@ If you use this code for your research, please cite the above paper.
 }
 ```
 
-# License
+## License
 This project is licensed under the [CC BY-NC-ND 4.0 license](LICENSE.md).

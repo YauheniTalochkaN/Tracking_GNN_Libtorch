@@ -109,35 +109,35 @@ target_link_libraries(TorchNetworks PUBLIC ${TORCH_LIBRARIES}
 
 add_executable(train ${train_source})
 target_include_directories(train PRIVATE ${PROJECT_SOURCE_DIR}/include)
-target_compile_features(train PRIVATE cxx_std_17 cuda_std_17)
+target_compile_features(train PRIVATE cxx_std_20 cuda_std_20)
 target_link_libraries(train PRIVATE TorchNetworks)
 
 #----------------------------------------------------------------------------------------------------------------------
 
 add_executable(evaluate_gnn ${evaluate_gnn_source})
 target_include_directories(evaluate_gnn PRIVATE ${PROJECT_SOURCE_DIR}/include)
-target_compile_features(evaluate_gnn PRIVATE cxx_std_17 cuda_std_17)
+target_compile_features(evaluate_gnn PRIVATE cxx_std_20 cuda_std_20)
 target_link_libraries(evaluate_gnn PRIVATE TorchNetworks)
 
 #----------------------------------------------------------------------------------------------------------------------
 
 add_executable(evaluate_events ${evaluate_events_source})
 target_include_directories(evaluate_events PRIVATE ${PROJECT_SOURCE_DIR}/include)
-target_compile_features(evaluate_events PRIVATE cxx_std_17 cuda_std_17)
+target_compile_features(evaluate_events PRIVATE cxx_std_20 cuda_std_20)
 target_link_libraries(evaluate_events PRIVATE TorchNetworks)
 
 #----------------------------------------------------------------------------------------------------------------------
 
 add_executable(data_preprocessing ${data_preprocessing_source})
 target_include_directories(data_preprocessing PRIVATE ${PROJECT_SOURCE_DIR}/include)
-target_compile_features(data_preprocessing PRIVATE cxx_std_17 cuda_std_17)
+target_compile_features(data_preprocessing PRIVATE cxx_std_20 cuda_std_20)
 target_link_libraries(data_preprocessing PRIVATE TorchNetworks)
 
 #----------------------------------------------------------------------------------------------------------------------
 
 add_executable(train_data_preprocessing ${train_data_preprocessing_source})
 target_include_directories(train_data_preprocessing PRIVATE ${PROJECT_SOURCE_DIR}/include)
-target_compile_features(train_data_preprocessing PRIVATE cxx_std_17 cuda_std_17)
+target_compile_features(train_data_preprocessing PRIVATE cxx_std_20 cuda_std_20)
 target_link_libraries(train_data_preprocessing PRIVATE TorchNetworks)
 
 #----------------------------------------------------------------------------------------------------------------------

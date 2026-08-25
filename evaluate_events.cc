@@ -117,9 +117,7 @@ int main(int argc, char* argv[])
         auto node_attr  = graph.node_attr;
         auto edge_attr  = graph.edge_attr;
 
-        auto [answer_pred, final_node_attr] = model->forward(edge_index, node_attr, edge_attr);
-
-        graph.answer = answer_pred;
+        graph.answer = model->forward(edge_index, node_attr, edge_attr);
 
         graph = graph.to(torch::kCPU);
 
