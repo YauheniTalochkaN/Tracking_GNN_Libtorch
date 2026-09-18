@@ -64,7 +64,7 @@ void SaveHits(TDirectory* pDir, std::string name)
 		
 				if(processed_ids.find((*pVec)[i][6]) == processed_ids.end())
 				{
-					file_tracks << (*pVec)[i][6] << "," << (*pVec)[i][7] << "," << fabs((*pVec)[i][8]) << "\n";
+					file_tracks << (*pVec)[i][6] << "," << (*pVec)[i][7] << "," << std::abs((*pVec)[i][8]) << "\n";
 					
 					processed_ids.insert((*pVec)[i][6]);
 				} 
